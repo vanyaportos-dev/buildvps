@@ -11,7 +11,7 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
-    const { action, email, password, password2 } = req.body;
+    const { action, email, password, password2, reason } = req.body;
 
     // РЕГИСТРАЦИЯ
     if (action === 'register') {
@@ -32,7 +32,7 @@ export default async function handler(req, res) {
 
         const pending = await kv.get(`reg:${email}`);
         if (pending) {
-            return res.status(400).json({ error: 'Заявка уже отправлена. Ожидайте подтверждения.' });
+            return res.status(400).json({ error: 'Заявка уже отправлена' });
         }
 
         const hash = await bcrypt.hash(password, 10);
@@ -44,14 +44,13 @@ export default async function handler(req, res) {
         };
         await kv.set(`reg:${email}`, entry);
 
-        // Добавляем в список заявок
         const list = (await kv.get('reg:list')) || [];
         if (!list.includes(email)) {
             list.push(email);
             await kv.set('reg:list', list);
         }
 
-        return res.status(200).json({ ok: true, message: 'Заявка отправлена. Ожидайте подтверждения (10-15 минут).' });
+        return res.status(200).json({ ok: true, message: 'Заявка отправлена. Ожидайте подтверждения.' });
     }
 
     // ЛОГИН
@@ -60,7 +59,6 @@ export default async function handler(req, res) {
             return res.status(400).json({ error: 'Email и пароль обязательны' });
         }
 
-        // Проверяем в users
         let user = await kv.get(`users:${email}`);
         if (user) {
             const valid = await bcrypt.compare(password, user.password_hash);
@@ -72,22 +70,12 @@ export default async function handler(req, res) {
             }
         }
 
-        // Проверяем в заявках
         const pending = await kv.get(`reg:${email}`);
-        if (pending && pending.status === 'approved') {
-            // Аккаунт уже должен быть в users, но если нет — создаём
-            const token = generateToken();
-            await kv.set(`token:${token}`, email);
-            res.setHeader('Set-Cookie', `build_token=${token}; Path=/; Max-Age=2592000; HttpOnly; Secure; SameSite=Lax`);
-            return res.status(200).json({ ok: true, redirect: '/dashboard.html' });
-        }
-
         if (pending && pending.status === 'pending') {
-            return res.status(403).json({ error: 'Заявка на рассмотрении. Подождите.' });
+            return res.status(403).json({ error: 'Заявка на рассмотрении' });
         }
-
         if (pending && pending.status === 'rejected') {
-            return res.status(403).json({ error: `Заявка отклонена. Причина: ${pending.reason || 'не указана'}` });
+            return res.status(403).json({ error: `Заявка отклонена: ${pending.reason || 'не указана'}` });
         }
 
         return res.status(401).json({ error: 'Неверный email или пароль' });
@@ -139,23 +127,15 @@ export default async function handler(req, res) {
         }
         const { email } = req.body;
         const entry = await kv.get(`reg:${email}`);
-        if (!entry) {
-            return res.status(404).json({ error: 'Заявка не найдена' });
-        }
-        if (entry.status !== 'pending') {
-            return res.status(400).json({ error: 'Заявка уже обработана' });
-        }
+        if (!entry) return res.status(404).json({ error: 'Заявка не найдена' });
+        if (entry.status !== 'pending') return res.status(400).json({ error: 'Уже обработана' });
 
-        // Создаём пользователя
         const user = {
             email: entry.email,
             password_hash: entry.password_hash,
-            createdAt: entry.createdAt,
-            lastLogin: null
+            createdAt: entry.createdAt
         };
         await kv.set(`users:${email}`, user);
-        
-        // Обновляем статус заявки
         entry.status = 'approved';
         await kv.set(`reg:${email}`, entry);
 
@@ -170,12 +150,8 @@ export default async function handler(req, res) {
         }
         const { email, reason } = req.body;
         const entry = await kv.get(`reg:${email}`);
-        if (!entry) {
-            return res.status(404).json({ error: 'Заявка не найдена' });
-        }
-        if (entry.status !== 'pending') {
-            return res.status(400).json({ error: 'Заявка уже обработана' });
-        }
+        if (!entry) return res.status(404).json({ error: 'Заявка не найдена' });
+        if (entry.status !== 'pending') return res.status(400).json({ error: 'Уже обработана' });
 
         entry.status = 'rejected';
         entry.reason = reason || 'Не указана';
