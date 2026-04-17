@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Как работает интернет-цензура — BUILD VPN Блог</title>
+  <meta name="description" content="DPI, блокировки по IP и DNS, системы ТСПУ — объясняем технически, как государства блокируют сайты и как это обходится.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<div class="container">
+
+  <div class="article-header fade-up">
+    <div class="breadcrumb">
+      <a href="index.html"><i class="fa-solid fa-pen-nib"></i> Блог</a> / Цензура
+    </div>
+    <div style="margin-bottom:10px;"><span class="badge badge-yellow"><i class="fa-solid fa-globe"></i> Цензура</span></div>
+    <h1>Как работает интернет-цензура и почему VPN — лучший способ её обойти</h1>
+    <div class="article-meta">
+      <span><i class="fa-regular fa-calendar"></i> 28 ноября 2024</span>
+      <span><i class="fa-regular fa-clock"></i> 9 минут чтения</span>
+    </div>
+  </div>
+
+  <div class="article-body fade-up">
+    <p>Вы пытаетесь открыть сайт, а браузер выдаёт «Подключение сброшено» или «Этот сайт недоступен». Что происходит за кулисами? Разберём технически, как работают блокировки и почему современные VPN успешно их обходят.</p>
+
+    <h2>Метод 1: DNS-блокировка</h2>
+    <p>Самый простой и распространённый метод. Когда вы вводите адрес сайта, браузер спрашивает у DNS-сервера: «Какой IP у этого домена?». Провайдер управляет вашим DNS-сервером по умолчанию и может ответить неверным адресом — или не ответить вовсе.</p>
+    <p><strong>Обход:</strong> смена DNS на зашифрованный (1.1.1.1, 9.9.9.9) или использование VPN, который перенаправляет DNS через собственные серверы. DNS-блокировка — самая слабая: обходится за 30 секунд настройки.</p>
+
+    <h2>Метод 2: Блокировка по IP-адресу</h2>
+    <p>Регулятор передаёт провайдерам список IP-адресов для блокировки. Провайдер настраивает маршрутизаторы так, чтобы пакеты на эти адреса отбрасывались или не доходили до получателя.</p>
+    <p><strong>Проблема метода:</strong> крупные сервисы используют тысячи IP-адресов через CDN. Заблокировать Cloudflare означало бы заблокировать миллионы сайтов одновременно. Поэтому IP-блокировки работают только против небольших ресурсов.</p>
+    <p><strong>Обход:</strong> VPN меняет ваш IP на IP сервера, который не находится в списке блокировок. Трафик идёт через промежуточный сервер в другой стране.</p>
+
+    <h2>Метод 3: DPI — глубокая инспекция пакетов</h2>
+    <p>Deep Packet Inspection — продвинутая технология, которую применяют в странах с развитой интернет-цензурой. Специализированное оборудование анализирует не только заголовки, но и содержимое сетевых пакетов в режиме реального времени.</p>
+    <p>DPI умеет распознавать протоколы по «отпечаткам»: OpenVPN имеет характерный handshake, WireGuard — характерный UDP-паттерн. Система видит: «Это не обычный HTTPS, это VPN» — и блокирует соединение.</p>
+    <p><strong>Обход:</strong> протоколы обфускации, в частности VLESS + Reality. Они имитируют обычный HTTPS настолько точно, что DPI не может отличить VPN-трафик от обращения к обычному сайту.</p>
+
+    <h2>Метод 4: ТСПУ в России</h2>
+    <p>Технические средства противодействия угрозам (ТСПУ) — российская система, введённая согласно закону «о суверенном интернете» 2019 года. Оборудование устанавливается непосредственно на узлах провайдеров и работает по принципу DPI с централизованным управлением из Роскомнадзора.</p>
+    <p>ТСПУ позволяет замедлять (а не только блокировать) отдельные протоколы — именно так в 2021 году замедлялся Twitter. Система постоянно совершенствуется: регулярно добавляются новые сигнатуры для обнаружения VPN-протоколов.</p>
+    <p><strong>Почему VLESS Reality обходит ТСПУ:</strong> система не может заблокировать трафик, который неотличим от обычного HTTPS к легитимному домену. Блокировка такого трафика означала бы блокировку половины интернета.</p>
+
+    <h2>Метод 5: Блокировка SNI</h2>
+    <p>При установке HTTPS-соединения клиент в открытом виде сообщает, к какому домену он подключается — это называется Server Name Indication (SNI). Оборудование на стороне провайдера читает SNI и может заблокировать соединение, даже не видя содержимого.</p>
+    <p><strong>Обход:</strong> ESNI (Encrypted SNI) или ECH (Encrypted Client Hello) шифрует этот параметр. Некоторые VPN-клиенты используют эту технологию автоматически.</p>
+
+    <h2>Почему простой VPN иногда не работает</h2>
+    <p>Многие «классические» VPN легко детектируются и блокируются именно потому, что используют устаревшие протоколы с известными DPI-сигнатурами. Это не значит, что VPN бесполезен — это значит, что нужен правильный VPN с современными протоколами обфускации.</p>
+
+    <h2>Bridge-серверы BUILD VPN</h2>
+    <p>Для случаев, когда даже VLESS Reality испытывает сложности, BUILD VPN предлагает специальные Bridge-серверы. Они используют дополнительные уровни обфускации и нестандартные порты, что делает их практически невозможными для блокировки. Bridge — это «запасной выход» для самых сложных сетевых сред.</p>
+  </div>
+
+  <div class="article-cta fade-up">
+    <h3>Обходите блокировки надёжно с BUILD VPN</h3>
+    <p>VLESS Reality + Bridge-серверы — работает даже там, где другие VPN сдаются.</p>
+    <div class="article-cta-buttons">
+      <a href="https://t.me/buildvpn_bot" target="_blank" rel="noopener" class="btn btn-primary">
+        <i class="fa-brands fa-telegram"></i> @buildvpn_bot
+      </a>
+      <a href="https://t.me/buildvpn_io" target="_blank" rel="noopener" class="btn btn-secondary">
+        <i class="fa-brands fa-telegram"></i> Канал @buildvpn_io
+      </a>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin:16px 0 8px;">
+    <a href="index.html" class="btn btn-ghost"><i class="fa-solid fa-arrow-left"></i> Все статьи</a>
+  </div>
+
+</div>
+
+<!-- SPEED TEST MODAL -->
+<div class="modal-overlay" id="speedtest-overlay">
+  <div class="modal" id="speedtest-modal">
+    <button class="modal-close" onclick="closeSpeedTest()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="speedtest-title"><i class="fa-solid fa-gauge-high" style="color:var(--accent)"></i> Тест скорости</div>
+    <div class="speedtest-subtitle">Проверьте скорость вашего соединения</div>
+    <div class="speed-metrics">
+      <div class="speed-metric"><div class="speed-metric-label">Пинг</div><div class="speed-metric-value" id="ping-val">—</div><div class="speed-metric-unit">мс</div></div>
+      <div class="speed-metric"><div class="speed-metric-label">Загрузка</div><div class="speed-metric-value" id="dl-val">—</div><div class="speed-metric-unit">Мбит/с</div></div>
+      <div class="speed-metric"><div class="speed-metric-label">Отдача</div><div class="speed-metric-value" id="ul-val">—</div><div class="speed-metric-unit">Мбит/с</div></div>
+    </div>
+    <div class="speed-progress-wrap">
+      <div class="speed-progress-label"><span id="speed-phase">Ожидание...</span><span id="speed-pct">0%</span></div>
+      <div class="speed-progress-bar"><div class="speed-progress-fill" id="speed-fill"></div></div>
+    </div>
+    <div class="speedtest-btn-wrap"><button class="btn btn-primary" id="speedtest-run-btn"><i class="fa-solid fa-bolt"></i> Запустить</button></div>
+    <div class="speedtest-footer">Технология тестирования предоставлена <strong>BUILD VPN</strong></div>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <a class="nav-item" href="../servers.html"><i class="fa-solid fa-server"></i><span>Серверы</span></a>
+  <a class="nav-item" href="../news.html"><i class="fa-solid fa-newspaper"></i><span>Новости</span></a>
+  <a class="nav-item" href="../index.html#faq"><i class="fa-solid fa-circle-question"></i><span>FAQ</span></a>
+  <a class="nav-item" href="../dashboard.html"><i class="fa-solid fa-user"></i><span>Профиль</span></a>
+  <button class="nav-item" onclick="openSpeedTest()"><i class="fa-solid fa-gauge-high"></i><span>Speedtest</span></button>
+  <a class="nav-item active" href="index.html"><i class="fa-solid fa-pen-nib"></i><span>Блог</span></a>
+  <a class="nav-item" href="../register.html"><i class="fa-solid fa-user-plus"></i><span>Регистрация</span></a>
+</nav>
+
+<script src="../script.js"></script>
+</body>
+</html>

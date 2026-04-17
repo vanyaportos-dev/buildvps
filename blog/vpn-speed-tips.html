@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Почему VPN замедляет интернет и как это исправить — BUILD VPN Блог</title>
+  <meta name="description" content="Выбор сервера, протоколы, MTU, split-tunneling — практические советы для достижения максимальной скорости через VPN.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<div class="container">
+
+  <div class="article-header fade-up">
+    <div class="breadcrumb">
+      <a href="index.html"><i class="fa-solid fa-pen-nib"></i> Блог</a> / Скорость
+    </div>
+    <div style="margin-bottom:10px;"><span class="badge badge-green"><i class="fa-solid fa-gauge-high"></i> Скорость</span></div>
+    <h1>Почему VPN замедляет интернет и как получить максимальную скорость</h1>
+    <div class="article-meta">
+      <span><i class="fa-regular fa-calendar"></i> 14 ноября 2024</span>
+      <span><i class="fa-regular fa-clock"></i> 8 минут чтения</span>
+    </div>
+  </div>
+
+  <div class="article-body fade-up">
+    <p>«VPN медленный» — одна из самых распространённых жалоб. Но правда в том, что замедление зависит не от VPN как такового, а от конкретных настроек, протокола и выбора сервера. При правильной конфигурации разница в скорости с VPN и без него составляет 5–15%, а в отдельных случаях VPN даже ускоряет соединение.</p>
+
+    <h2>Почему VPN может замедлять соединение</h2>
+    <p>Есть несколько технических причин:</p>
+    <ul>
+      <li><strong>Шифрование</strong> — процессор тратит ресурсы на шифрование и расшифровку трафика. На современных устройствах это незначительно (менее 1% нагрузки), но на старых может ощущаться.</li>
+      <li><strong>Физическое расстояние до сервера</strong> — каждый пакет делает дополнительный «крюк» через VPN-сервер. Если сервер в Японии, а вы в России — добавляется 80–150 мс латентности.</li>
+      <li><strong>Нагрузка на сервер</strong> — перегруженный сервер обрабатывает трафик медленнее. BUILD VPN показывает статусы серверов, чтобы вы могли выбрать менее нагруженный.</li>
+      <li><strong>Протокол</strong> — старые протоколы (OpenVPN, PPTP) значительно медленнее современных.</li>
+    </ul>
+
+    <h2>Совет 1: Выбирайте ближайший сервер</h2>
+    <p>Простое правило: чем ближе сервер, тем меньше задержка. Для повседневного использования (обход блокировок, приватность) выберите сервер в соседней стране — Латвия, Германия, Нидерланды. Пинг будет 50–100 мс против 200+ мс для Японии или США.</p>
+    <p>Исключение: если вам нужен IP конкретной страны (для стриминга или обхода геоблокировки) — выбирайте целевую страну, несмотря на расстояние.</p>
+
+    <h2>Совет 2: Используйте WireGuard там, где возможно</h2>
+    <p>WireGuard — самый быстрый VPN-протокол из существующих. Его кодовая база в 10 раз меньше OpenVPN, он использует современную криптографию (ChaCha20) и работает в пространстве ядра Linux. Реальные тесты показывают скорость до 1 Гбит/с на современном железе.</p>
+    <p>Когда использовать WireGuard: в регионах без жёсткой DPI-фильтрации — например, для соединений между Россией и Европой, где VPN не блокируется активно.</p>
+    <p>Когда использовать VLESS Reality: в условиях DPI-блокировок. Он немного медленнее WireGuard, но при правильной конфигурации разница минимальна.</p>
+
+    <h2>Совет 3: Включите Split Tunneling</h2>
+    <p>Split tunneling (раздельное туннелирование) — функция, которая позволяет указать, какой трафик идёт через VPN, а какой — напрямую. Например:</p>
+    <ul>
+      <li>Через VPN: Instagram, YouTube, заблокированные сайты</li>
+      <li>Напрямую: интернет-банкинг, Госуслуги, локальные сервисы</li>
+    </ul>
+    <p>В BUILD VPN это реализовано через WhiteList-серверы: они автоматически маршрутизируют только нужный трафик. Результат — скорость локальных сервисов не страдает совсем, а заблокированные ресурсы работают через VPN.</p>
+
+    <h2>Совет 4: Проверяйте загрузку серверов</h2>
+    <p>На странице серверов BUILD VPN отображаются статусы: зелёный (нормальная нагрузка), жёлтый (высокая нагрузка), красный (офлайн). Если ваш текущий сервер жёлтый, попробуйте альтернативный с таким же геолокацией — например, если нагружен Germany - Frankfurt, попробуйте Germany - Frankfurt 2.</p>
+
+    <h2>Совет 5: Проверьте MTU</h2>
+    <p>MTU (Maximum Transmission Unit) — максимальный размер сетевого пакета. VPN добавляет к каждому пакету заголовки, и если MTU не скорректирован, пакеты фрагментируются, что снижает производительность. Оптимальный MTU для большинства VPN-конфигураций — 1280–1420 байт. Современные клиенты (Hiddify, WireGuard) настраивают это автоматически.</p>
+
+    <h2>Совет 6: Обновляйте клиент VPN</h2>
+    <p>Разработчики регулярно оптимизируют код клиентов. Hiddify и V2rayNG получают обновления с улучшением производительности — убедитесь, что используете актуальную версию из официального источника.</p>
+
+    <h2>Тест скорости</h2>
+    <p>Прямо на этом сайте есть встроенный тест скорости — нажмите кнопку «Speedtest» в нижней панели. Это позволяет сравнить скорость до и после подключения к VPN, а также найти оптимальный сервер методом перебора.</p>
+
+    <h2>Почему иногда VPN быстрее без VPN</h2>
+    <p>Звучит парадоксально, но провайдеры нередко искусственно замедляют отдельные виды трафика — это называется traffic shaping. VPN «прячет» трафик от провайдера, и он не может применить ограничения. Особенно это заметно при стриминге или торрентах — скорость через VPN может быть выше, чем без него.</p>
+  </div>
+
+  <div class="article-cta fade-up">
+    <h3>Проверьте скорость BUILD VPN сами</h3>
+    <p>31 сервер, WireGuard и VLESS Reality — выберите оптимальный вариант для вашей задачи.</p>
+    <div class="article-cta-buttons">
+      <a href="https://t.me/buildvpn_bot" target="_blank" rel="noopener" class="btn btn-primary">
+        <i class="fa-brands fa-telegram"></i> @buildvpn_bot
+      </a>
+      <a href="https://t.me/buildvpn_io" target="_blank" rel="noopener" class="btn btn-secondary">
+        <i class="fa-brands fa-telegram"></i> Канал @buildvpn_io
+      </a>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin:16px 0 8px;">
+    <a href="index.html" class="btn btn-ghost"><i class="fa-solid fa-arrow-left"></i> Все статьи</a>
+  </div>
+
+</div>
+
+<!-- SPEED TEST MODAL -->
+<div class="modal-overlay" id="speedtest-overlay">
+  <div class="modal" id="speedtest-modal">
+    <button class="modal-close" onclick="closeSpeedTest()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="speedtest-title"><i class="fa-solid fa-gauge-high" style="color:var(--accent)"></i> Тест скорости</div>
+    <div class="speedtest-subtitle">Проверьте скорость вашего соединения</div>
+    <div class="speed-metrics">
+      <div class="speed-metric"><div class="speed-metric-label">Пинг</div><div class="speed-metric-value" id="ping-val">—</div><div class="speed-metric-unit">мс</div></div>
+      <div class="speed-metric"><div class="speed-metric-label">Загрузка</div><div class="speed-metric-value" id="dl-val">—</div><div class="speed-metric-unit">Мбит/с</div></div>
+      <div class="speed-metric"><div class="speed-metric-label">Отдача</div><div class="speed-metric-value" id="ul-val">—</div><div class="speed-metric-unit">Мбит/с</div></div>
+    </div>
+    <div class="speed-progress-wrap">
+      <div class="speed-progress-label"><span id="speed-phase">Ожидание...</span><span id="speed-pct">0%</span></div>
+      <div class="speed-progress-bar"><div class="speed-progress-fill" id="speed-fill"></div></div>
+    </div>
+    <div class="speedtest-btn-wrap"><button class="btn btn-primary" id="speedtest-run-btn"><i class="fa-solid fa-bolt"></i> Запустить</button></div>
+    <div class="speedtest-footer">Технология тестирования предоставлена <strong>BUILD VPN</strong></div>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <a class="nav-item" href="../servers.html"><i class="fa-solid fa-server"></i><span>Серверы</span></a>
+  <a class="nav-item" href="../news.html"><i class="fa-solid fa-newspaper"></i><span>Новости</span></a>
+  <a class="nav-item" href="../index.html#faq"><i class="fa-solid fa-circle-question"></i><span>FAQ</span></a>
+  <a class="nav-item" href="../dashboard.html"><i class="fa-solid fa-user"></i><span>Профиль</span></a>
+  <button class="nav-item" onclick="openSpeedTest()"><i class="fa-solid fa-gauge-high"></i><span>Speedtest</span></button>
+  <a class="nav-item active" href="index.html"><i class="fa-solid fa-pen-nib"></i><span>Блог</span></a>
+  <a class="nav-item" href="../register.html"><i class="fa-solid fa-user-plus"></i><span>Регистрация</span></a>
+</nav>
+
+<script src="../script.js"></script>
+</body>
+</html>

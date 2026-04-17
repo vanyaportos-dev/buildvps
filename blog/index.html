@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Блог — BUILD VPN</title>
+  <meta name="description" content="Блог BUILD VPN: полезные статьи о VPN, приватности, безопасности в интернете и обходе блокировок.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<div class="container">
+
+  <div class="page-header fade-up">
+    <h1><i class="fa-solid fa-pen-nib" style="color:var(--accent);font-size:1.5rem;"></i> Блог</h1>
+    <p>Гиды, советы и всё о VPN и приватности</p>
+  </div>
+
+  <div class="blog-grid">
+
+    <a class="blog-card fade-up" href="what-is-vless.html">
+      <div class="blog-card-category"><i class="fa-solid fa-shield-halved"></i> Протоколы</div>
+      <div class="blog-card-title">VLESS и Reality: что это и почему это лучший VPN-протокол 2024 года</div>
+      <div class="blog-card-desc">Разбираем, чем VLESS + Reality отличается от OpenVPN, WireGuard и почему его практически невозможно заблокировать.</div>
+      <div class="blog-card-read">Читать <i class="fa-solid fa-arrow-right"></i></div>
+    </a>
+
+    <a class="blog-card fade-up" href="vpn-privacy-guide.html">
+      <div class="blog-card-category"><i class="fa-solid fa-eye-slash"></i> Приватность</div>
+      <div class="blog-card-title">Полный гид по анонимности в интернете: что реально работает в 2024</div>
+      <div class="blog-card-desc">VPN, браузеры, DNS, трекеры — как выстроить многоуровневую защиту своих данных без технических знаний.</div>
+      <div class="blog-card-read">Читать <i class="fa-solid fa-arrow-right"></i></div>
+    </a>
+
+    <a class="blog-card fade-up" href="internet-censorship.html">
+      <div class="blog-card-category"><i class="fa-solid fa-globe"></i> Цензура</div>
+      <div class="blog-card-title">Как работает интернет-цензура и почему VPN — лучший способ её обойти</div>
+      <div class="blog-card-desc">DPI, блокировки по IP и DNS, системы ТСПУ — объясняем технически, как государства блокируют сайты и как это обходится.</div>
+      <div class="blog-card-read">Читать <i class="fa-solid fa-arrow-right"></i></div>
+    </a>
+
+    <a class="blog-card fade-up" href="top-vpn-uses.html">
+      <div class="blog-card-category"><i class="fa-solid fa-list-check"></i> Советы</div>
+      <div class="blog-card-title">10 сценариев, когда VPN необходим: от работы до путешествий</div>
+      <div class="blog-card-desc">Публичный Wi-Fi, стриминг, удалённая работа, онлайн-игры — для каких задач VPN нужен обязательно и почему.</div>
+      <div class="blog-card-read">Читать <i class="fa-solid fa-arrow-right"></i></div>
+    </a>
+
+    <a class="blog-card fade-up" href="vpn-speed-tips.html">
+      <div class="blog-card-category"><i class="fa-solid fa-gauge-high"></i> Скорость</div>
+      <div class="blog-card-title">Почему VPN замедляет интернет и как получить максимальную скорость</div>
+      <div class="blog-card-desc">Выбор сервера, протоколы, MTU, split-tunneling — практические советы для достижения максимальной скорости через VPN.</div>
+      <div class="blog-card-read">Читать <i class="fa-solid fa-arrow-right"></i></div>
+    </a>
+
+  </div>
+
+  <!-- Channel Banner -->
+  <a href="https://t.me/buildvpn_io" target="_blank" rel="noopener" class="channel-banner fade-up" style="margin-top:32px;">
+    <i class="fa-brands fa-telegram"></i>
+    <div class="channel-banner-text">
+      <h4>@buildvpn_io — Telegram-канал</h4>
+      <p>Новые статьи, обновления сервиса и полезные советы по безопасности</p>
+    </div>
+    <i class="fa-solid fa-arrow-right" style="font-size:1rem;color:var(--text-muted);"></i>
+  </a>
+
+</div>
+
+<!-- SPEED TEST MODAL -->
+<div class="modal-overlay" id="speedtest-overlay">
+  <div class="modal" id="speedtest-modal">
+    <button class="modal-close" onclick="closeSpeedTest()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="speedtest-title"><i class="fa-solid fa-gauge-high" style="color:var(--accent)"></i> Тест скорости</div>
+    <div class="speedtest-subtitle">Проверьте скорость вашего соединения</div>
+    <div class="speed-metrics">
+      <div class="speed-metric"><div class="speed-metric-label">Пинг</div><div class="speed-metric-value" id="ping-val">—</div><div class="speed-metric-unit">мс</div></div>
+      <div class="speed-metric"><div class="speed-metric-label">Загрузка</div><div class="speed-metric-value" id="dl-val">—</div><div class="speed-metric-unit">Мбит/с</div></div>
+      <div class="speed-metric"><div class="speed-metric-label">Отдача</div><div class="speed-metric-value" id="ul-val">—</div><div class="speed-metric-unit">Мбит/с</div></div>
+    </div>
+    <div class="speed-progress-wrap">
+      <div class="speed-progress-label"><span id="speed-phase">Ожидание...</span><span id="speed-pct">0%</span></div>
+      <div class="speed-progress-bar"><div class="speed-progress-fill" id="speed-fill"></div></div>
+    </div>
+    <div class="speedtest-btn-wrap"><button class="btn btn-primary" id="speedtest-run-btn"><i class="fa-solid fa-bolt"></i> Запустить</button></div>
+    <div class="speedtest-footer">Технология тестирования предоставлена <strong>BUILD VPN</strong></div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <a class="nav-item" href="../servers.html" data-page="servers"><i class="fa-solid fa-server"></i><span>Серверы</span></a>
+  <a class="nav-item" href="../news.html" data-page="news"><i class="fa-solid fa-newspaper"></i><span>Новости</span></a>
+  <a class="nav-item" href="../index.html#faq" data-page="faq"><i class="fa-solid fa-circle-question"></i><span>FAQ</span></a>
+  <a class="nav-item" href="../dashboard.html" data-page="profile"><i class="fa-solid fa-user"></i><span>Профиль</span></a>
+  <button class="nav-item" onclick="openSpeedTest()" data-page="speedtest"><i class="fa-solid fa-gauge-high"></i><span>Speedtest</span></button>
+  <a class="nav-item active" href="index.html" data-page="blog"><i class="fa-solid fa-pen-nib"></i><span>Блог</span></a>
+  <a class="nav-item" href="../register.html" data-page="register"><i class="fa-solid fa-user-plus"></i><span>Регистрация</span></a>
+</nav>
+
+<script src="../script.js"></script>
+</body>
+</html>

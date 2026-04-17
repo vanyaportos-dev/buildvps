@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Полный гид по анонимности в интернете — BUILD VPN Блог</title>
+  <meta name="description" content="VPN, браузеры, DNS, трекеры — как выстроить многоуровневую защиту своих данных без технических знаний.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<div class="container">
+
+  <div class="article-header fade-up">
+    <div class="breadcrumb">
+      <a href="index.html"><i class="fa-solid fa-pen-nib"></i> Блог</a> / Приватность
+    </div>
+    <div style="margin-bottom:10px;"><span class="badge badge-green"><i class="fa-solid fa-eye-slash"></i> Приватность</span></div>
+    <h1>Полный гид по анонимности в интернете: что реально работает в 2024</h1>
+    <div class="article-meta">
+      <span><i class="fa-regular fa-calendar"></i> 5 декабря 2024</span>
+      <span><i class="fa-regular fa-clock"></i> 10 минут чтения</span>
+    </div>
+  </div>
+
+  <div class="article-body fade-up">
+    <p>Приватность в интернете — это не паранойя, а базовая гигиена цифровой жизни. Каждый раз, когда вы открываете браузер, десятки компаний собирают данные о вас: посещённые сайты, интересы, местоположение, поведение. Хорошая новость: защититься от большинства угроз можно без технических знаний.</p>
+
+    <h2>Уровень 1: VPN — базовая защита</h2>
+    <p>VPN шифрует весь ваш трафик и скрывает реальный IP-адрес. Ваш провайдер видит только зашифрованный поток данных — он не знает, какие сайты вы посещаете. Сайты, которые вы посещаете, видят IP VPN-сервера, а не ваш реальный адрес.</p>
+    <p><strong>Что важно при выборе VPN:</strong></p>
+    <ul>
+      <li>Политика No-Log — сервис не должен хранить данные о вашем трафике</li>
+      <li>Современные протоколы — VLESS Reality или WireGuard вместо устаревшего PPTP</li>
+      <li>Серверы в нужных странах для конкретных задач</li>
+      <li>Работа через Telegram-бот — минимум личных данных при регистрации</li>
+    </ul>
+
+    <h2>Уровень 2: Браузер и расширения</h2>
+    <p>Даже с VPN браузер может «сливать» данные. Рекомендуем:</p>
+    <ul>
+      <li><strong>Firefox</strong> с настройкой Enhanced Tracking Protection — хороший баланс удобства и приватности</li>
+      <li><strong>Brave</strong> — встроенный блокировщик рекламы и трекеров, Chromium-совместимость</li>
+      <li><strong>uBlock Origin</strong> — лучший блокировщик рекламы для Chrome и Firefox</li>
+      <li><strong>Privacy Badger</strong> (EFF) — блокирует невидимые трекеры</li>
+    </ul>
+    <p>Избегайте входа в браузер через Google/Microsoft аккаунт — это позволяет отслеживать вас даже при смене IP.</p>
+
+    <h2>Уровень 3: DNS-защита</h2>
+    <p>DNS-запросы — это «телефонная книга» интернета. По умолчанию ваш провайдер видит все ваши DNS-запросы, даже если вы используете HTTPS. Решение — зашифрованный DNS:</p>
+    <ul>
+      <li><strong>DNS over HTTPS (DoH)</strong> — встроен в Firefox и Chrome, включите в настройках</li>
+      <li><strong>1.1.1.1 от Cloudflare</strong> — быстрый и приватный DNS-сервер</li>
+      <li><strong>9.9.9.9 (Quad9)</strong> — дополнительно блокирует вредоносные домены</li>
+    </ul>
+    <p>При использовании BUILD VPN DNS-запросы автоматически шифруются и маршрутизируются через наши серверы.</p>
+
+    <h2>Уровень 4: Защита от фингерпринтинга</h2>
+    <p>Браузерный фингерпринт — уникальный «слепок» вашего устройства: сочетание разрешения экрана, шрифтов, установленных плагинов, временной зоны и сотни других параметров. Сайты используют его для отслеживания, даже если вы меняете IP.</p>
+    <p>Для защиты: режим приватного просмотра ограничивает фингерпринт, браузер Brave имеет встроенную рандомизацию, расширение Canvas Blocker мешает сайтам считывать графический отпечаток.</p>
+
+    <h2>Уровень 5: Мессенджеры и почта</h2>
+    <p>Для приватного общения используйте <strong>Signal</strong> — стандарт безопасной связи с открытым исходным кодом. Telegram с включённым «секретным чатом» также шифрует сообщения end-to-end. Для почты — <strong>ProtonMail</strong> или <strong>Tutanota</strong>, которые не могут читать ваши письма.</p>
+
+    <h2>Что не нужно делать</h2>
+    <ul>
+      <li>Не устанавливайте несколько VPN одновременно — они конфликтуют между собой</li>
+      <li>Не верьте «бесплатным» VPN — они монетизируются продажей ваших данных</li>
+      <li>Не используйте один пароль на разных сайтах — менеджер паролей решает эту проблему</li>
+      <li>Не игнорируйте двухфакторную аутентификацию — она блокирует 99% взломов аккаунтов</li>
+    </ul>
+
+    <h2>Практический план на сегодня</h2>
+    <p>Если вы хотите начать прямо сейчас: (1) подключите BUILD VPN через Telegram-бот, (2) установите uBlock Origin в браузер, (3) включите DNS over HTTPS в настройках браузера, (4) включите двухфакторную аутентификацию в важных сервисах. Эти четыре шага закроют 80% угроз приватности.</p>
+  </div>
+
+  <!-- CTA -->
+  <div class="article-cta fade-up">
+    <h3>Начните с VPN — первый шаг к приватности</h3>
+    <p>BUILD VPN — без логов, без регистрации по email, только Telegram.</p>
+    <div class="article-cta-buttons">
+      <a href="https://t.me/buildvpn_bot" target="_blank" rel="noopener" class="btn btn-primary">
+        <i class="fa-brands fa-telegram"></i> @buildvpn_bot
+      </a>
+      <a href="https://t.me/buildvpn_io" target="_blank" rel="noopener" class="btn btn-secondary">
+        <i class="fa-brands fa-telegram"></i> Канал @buildvpn_io
+      </a>
+    </div>
+  </div>
+
+  <div style="text-align:center;margin:16px 0 8px;">
+    <a href="index.html" class="btn btn-ghost"><i class="fa-solid fa-arrow-left"></i> Все статьи</a>
+  </div>
+
+</div>
+
+<!-- SPEED TEST MODAL -->
+<div class="modal-overlay" id="speedtest-overlay">
+  <div class="modal" id="speedtest-modal">
+    <button class="modal-close" onclick="closeSpeedTest()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="speedtest-title"><i class="fa-solid fa-gauge-high" style="color:var(--accent)"></i> Тест скорости</div>
+    <div class="speedtest-subtitle">Проверьте скорость вашего соединения</div>
+    <div class="speed-metrics">
+      <div class="speed-metric"><div class="speed-metric-label">Пинг</div><div class="speed-metric-value" id="ping-val">—</div><div class="speed-metric-unit">мс</div></div>
+      <div class="speed-metric"><div class="speed-metric-label">Загрузка</div><div class="speed-metric-value" id="dl-val">—</div><div class="speed-metric-unit">Мбит/с</div></div>
+      <div class="speed-metric"><div class="speed-metric-label">Отдача</div><div class="speed-metric-value" id="ul-val">—</div><div class="speed-metric-unit">Мбит/с</div></div>
+    </div>
+    <div class="speed-progress-wrap">
+      <div class="speed-progress-label"><span id="speed-phase">Ожидание...</span><span id="speed-pct">0%</span></div>
+      <div class="speed-progress-bar"><div class="speed-progress-fill" id="speed-fill"></div></div>
+    </div>
+    <div class="speedtest-btn-wrap"><button class="btn btn-primary" id="speedtest-run-btn"><i class="fa-solid fa-bolt"></i> Запустить</button></div>
+    <div class="speedtest-footer">Технология тестирования предоставлена <strong>BUILD VPN</strong></div>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <a class="nav-item" href="../servers.html"><i class="fa-solid fa-server"></i><span>Серверы</span></a>
+  <a class="nav-item" href="../news.html"><i class="fa-solid fa-newspaper"></i><span>Новости</span></a>
+  <a class="nav-item" href="../index.html#faq"><i class="fa-solid fa-circle-question"></i><span>FAQ</span></a>
+  <a class="nav-item" href="../dashboard.html"><i class="fa-solid fa-user"></i><span>Профиль</span></a>
+  <button class="nav-item" onclick="openSpeedTest()"><i class="fa-solid fa-gauge-high"></i><span>Speedtest</span></button>
+  <a class="nav-item active" href="index.html"><i class="fa-solid fa-pen-nib"></i><span>Блог</span></a>
+  <a class="nav-item" href="../register.html"><i class="fa-solid fa-user-plus"></i><span>Регистрация</span></a>
+</nav>
+
+<script src="../script.js"></script>
+</body>
+</html>
