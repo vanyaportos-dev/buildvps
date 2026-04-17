@@ -1,6 +1,6 @@
 export default function handler(req, res) {
     const clientId = process.env.GOOGLE_CLIENT_ID;
-    const redirectUri = 'https://buildvpn.vercel.app/api/auth/google/google-callback';
+    const redirectUri = 'https://buildvpn.vercel.app/api/google-callback';
     const url = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=email%20profile`;
     res.redirect(url);
 }
