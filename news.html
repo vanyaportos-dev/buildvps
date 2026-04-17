@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Новости — BUILD VPN</title>
+  <meta name="description" content="Последние новости и обновления BUILD VPN. Следите за развитием сервиса.">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+  <div class="page-header fade-up">
+    <h1><i class="fa-solid fa-newspaper" style="color:var(--accent);font-size:1.5rem;"></i> Новости</h1>
+    <p>Актуальные обновления и анонсы BUILD VPN</p>
+  </div>
+
+  <!-- News Card 1 -->
+  <div class="news-card fade-up">
+    <div class="news-date">
+      <i class="fa-solid fa-calendar"></i> 15 декабря 2024
+    </div>
+    <div class="news-title">🚀 Добавлены 3 новых WhiteList-сервера для России</div>
+    <div class="news-desc">
+      Мы расширили инфраструктуру WhiteList-серверов — теперь доступны Russia #7, #8 и #9. Эти серверы маршрутизируют через VPN только заблокированные ресурсы, оставляя банки, Госуслуги и другие отечественные сервисы на прямом соединении. Это обеспечивает максимальную совместимость с российскими финансовыми приложениями при полном доступе к заблокированному контенту.
+    </div>
+    <div style="margin-top:12px;">
+      <span class="badge badge-green">Инфраструктура</span>
+    </div>
+  </div>
+
+  <!-- News Card 2 -->
+  <div class="news-card fade-up">
+    <div class="news-date">
+      <i class="fa-solid fa-calendar"></i> 28 ноября 2024
+    </div>
+    <div class="news-title">⚡ Обновление протокола: VLESS Reality v2 уже доступен</div>
+    <div class="news-desc">
+      Все серверы BUILD VPN переведены на обновлённую версию протокола VLESS Reality. Новая версия обеспечивает ещё более надёжную обфускацию трафика — он неотличим от обычного HTTPS. Пользователи в странах с жёсткой DPI-фильтрацией сообщают о стабильном соединении без разрывов. Скорость на European-серверах увеличена в среднем на 15–20%.
+    </div>
+    <div style="margin-top:12px;">
+      <span class="badge badge-yellow">Обновление</span>
+    </div>
+  </div>
+
+  <!-- News Card 3 -->
+  <div class="news-card fade-up">
+    <div class="news-date">
+      <i class="fa-solid fa-calendar"></i> 10 ноября 2024
+    </div>
+    <div class="news-title">🎉 BUILD VPN достиг отметки 31 сервер в 15 странах</div>
+    <div class="news-desc">
+      Мы гордимся объявить, что наша инфраструктура выросла до 31 сервера, охватывая 15 стран на четырёх континентах. В этом месяце добавлены серверы в Индонезии (Джакарта) и новый Bridge-сервер в Нидерландах. Спасибо всем пользователям за доверие — именно ваши отзывы помогают нам развиваться! Подпишитесь на канал @buildvpn_io, чтобы узнавать об обновлениях первыми.
+    </div>
+    <div style="margin-top:12px;">
+      <span class="badge badge-green">Достижение</span>
+    </div>
+  </div>
+
+  <!-- Channel Banner -->
+  <a href="https://t.me/buildvpn_io" target="_blank" rel="noopener" class="channel-banner fade-up">
+    <i class="fa-brands fa-telegram"></i>
+    <div class="channel-banner-text">
+      <h4>Telegram-канал @buildvpn_io</h4>
+      <p>Все новости, обновления и акции — подпишитесь, чтобы не пропустить</p>
+    </div>
+    <i class="fa-solid fa-arrow-right" style="font-size:1rem;color:var(--text-muted);"></i>
+  </a>
+
+</div>
+
+<!-- SPEED TEST MODAL -->
+<div class="modal-overlay" id="speedtest-overlay">
+  <div class="modal" id="speedtest-modal">
+    <button class="modal-close" onclick="closeSpeedTest()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="speedtest-title"><i class="fa-solid fa-gauge-high" style="color:var(--accent)"></i> Тест скорости</div>
+    <div class="speedtest-subtitle">Проверьте скорость вашего соединения</div>
+    <div class="speed-metrics">
+      <div class="speed-metric">
+        <div class="speed-metric-label">Пинг</div>
+        <div class="speed-metric-value" id="ping-val">—</div>
+        <div class="speed-metric-unit">мс</div>
+      </div>
+      <div class="speed-metric">
+        <div class="speed-metric-label">Загрузка</div>
+        <div class="speed-metric-value" id="dl-val">—</div>
+        <div class="speed-metric-unit">Мбит/с</div>
+      </div>
+      <div class="speed-metric">
+        <div class="speed-metric-label">Отдача</div>
+        <div class="speed-metric-value" id="ul-val">—</div>
+        <div class="speed-metric-unit">Мбит/с</div>
+      </div>
+    </div>
+    <div class="speed-progress-wrap">
+      <div class="speed-progress-label">
+        <span id="speed-phase">Ожидание...</span>
+        <span id="speed-pct">0%</span>
+      </div>
+      <div class="speed-progress-bar">
+        <div class="speed-progress-fill" id="speed-fill"></div>
+      </div>
+    </div>
+    <div class="speedtest-btn-wrap">
+      <button class="btn btn-primary" id="speedtest-run-btn">
+        <i class="fa-solid fa-bolt"></i> Запустить
+      </button>
+    </div>
+    <div class="speedtest-footer">Технология тестирования предоставлена <strong>BUILD VPN</strong></div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <a class="nav-item" href="servers.html" data-page="servers">
+    <i class="fa-solid fa-server"></i><span>Серверы</span>
+  </a>
+  <a class="nav-item active" href="news.html" data-page="news">
+    <i class="fa-solid fa-newspaper"></i><span>Новости</span>
+  </a>
+  <a class="nav-item" href="index.html#faq" data-page="faq">
+    <i class="fa-solid fa-circle-question"></i><span>FAQ</span>
+  </a>
+  <a class="nav-item" href="dashboard.html" data-page="profile">
+    <i class="fa-solid fa-user"></i><span>Профиль</span>
+  </a>
+  <button class="nav-item" onclick="openSpeedTest()" data-page="speedtest">
+    <i class="fa-solid fa-gauge-high"></i><span>Speedtest</span>
+  </button>
+  <a class="nav-item" href="blog/index.html" data-page="blog">
+    <i class="fa-solid fa-pen-nib"></i><span>Блог</span>
+  </a>
+  <a class="nav-item" href="register.html" data-page="register">
+    <i class="fa-solid fa-user-plus"></i><span>Регистрация</span>
+  </a>
+</nav>
+
+<script src="script.js"></script>
+</body>
+</html>

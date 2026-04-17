@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация — BUILD VPN</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #A7F3D0 0%, #FED7AA 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .glass-card {
+            background: rgba(255,255,255,0.3);
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+        }
+        h1 { font-size: 28px; margin-bottom: 8px; color: #1F2937; }
+        p { color: #6B7280; margin-bottom: 24px; }
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 50px;
+            margin-bottom: 16px;
+            background: rgba(255,255,255,0.5);
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #10B981;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .links { margin-top: 16px; text-align: center; }
+        .links a { color: #10B981; text-decoration: none; }
+        .error, .success { margin-top: 12px; font-size: 14px; text-align: center; }
+        .error { color: #EF4444; }
+        .success { color: #10B981; }
+    </style>
+</head>
+<body>
+    <div class="glass-card">
+        <h1><i class="fa-solid fa-user-plus"></i> Регистрация</h1>
+        <p>Создайте аккаунт BUILD VPN</p>
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Пароль (мин. 6 символов)">
+        <input type="password" id="password2" placeholder="Повторите пароль">
+        <button onclick="register()">Зарегистрироваться</button>
+        <div class="links">
+            <a href="/login.html"><i class="fa-solid fa-right-to-bracket"></i> Уже есть аккаунт? Войти</a>
+        </div>
+        <div id="message" class="error"></div>
+    </div>
+    <script>
+        async function register() {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const password2 = document.getElementById('password2').value;
+            const msgDiv = document.getElementById('message');
+            
+            const res = await fetch('/api/post', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'register', email, password, password2 })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                msgDiv.className = 'success';
+                msgDiv.textContent = data.message;
+                setTimeout(() => { window.location.href = '/login.html'; }, 3000);
+            } else {
+                msgDiv.className = 'error';
+                msgDiv.textContent = data.error;
+            }
+        }
+    </script>
+</body>
+</html>

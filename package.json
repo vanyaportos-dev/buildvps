@@ -1,0 +1,21 @@
+{
+  "name": "buildvpn-site",
+  "version": "1.0.0",
+  "description": "BUILD VPN — официальный сайт сервиса",
+  "private": true,
+  "scripts": {
+    "dev":   "npx serve . --listen 3000 --no-clipboard",
+    "start": "npx serve . --listen 3000",
+    "build": "echo 'Static site — no build step required'"
+  },
+  "keywords": ["vpn", "vless", "wireguard", "privacy"],
+  "author": "BUILD VPN",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@vercel/kv": "^1.0.0",
+    "bcryptjs": "^2.4.3"
+  },
+  "devDependencies": {
+    "serve": "^14.2.3"
+  }
+}

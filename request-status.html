@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статус заявки — BUILD VPN</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #A7F3D0 0%, #FED7AA 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .glass-card {
+            background: rgba(255,255,255,0.3);
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        input { width: 100%; padding: 12px; border-radius: 50px; border: 1px solid rgba(0,0,0,0.1); margin-bottom: 16px; background: rgba(255,255,255,0.5); }
+        button { width: 100%; padding: 12px; background: #10B981; color: white; border: none; border-radius: 50px; cursor: pointer; }
+        .result { margin-top: 20px; padding: 12px; border-radius: 12px; }
+        .pending { background: rgba(245,158,11,0.2); color: #B45309; }
+        .approved { background: rgba(16,185,129,0.2); color: #065F46; }
+        .rejected { background: rgba(239,68,68,0.2); color: #991B1B; }
+    </style>
+</head>
+<body>
+    <div class="glass-card">
+        <h1><i class="fa-solid fa-magnifying-glass"></i> Статус заявки</h1>
+        <input type="email" id="email" placeholder="Ваш email">
+        <button onclick="checkStatus()">Проверить</button>
+        <div id="result"></div>
+        <div style="margin-top: 16px;"><a href="/login.html">← Назад</a></div>
+    </div>
+    <script>
+        async function checkStatus() {
+            const email = document.getElementById('email').value;
+            const res = await fetch('/api/post', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'check-status', email })
+            });
+            const data = await res.json();
+            const div = document.getElementById('result');
+            if (!res.ok) {
+                div.innerHTML = `<div class="result rejected">❌ ${data.error}</div>`;
+                return;
+            }
+            let statusText = '';
+            if (data.status === 'pending') statusText = '⏳ Заявка на рассмотрении. Ожидайте подтверждения (10-15 минут).';
+            else if (data.status === 'approved') statusText = '✅ Аккаунт подтверждён! Теперь вы можете войти.';
+            else if (data.status === 'rejected') statusText = `❌ Заявка отклонена. Причина: ${data.reason || 'не указана'}`;
+            div.innerHTML = `<div class="result ${data.status}">${statusText}</div>`;
+        }
+    </script>
+</body>
+</html>
