@@ -23,10 +23,9 @@
             padding: 40px;
             width: 100%;
             max-width: 400px;
-            text-align: center;
         }
         h1 { font-size: 28px; margin-bottom: 8px; color: #1F2937; }
-        .info { margin: 24px 0; text-align: left; }
+        .info { margin: 24px 0; }
         .info p { margin: 12px 0; color: #1F2937; }
         .info i { width: 24px; color: #10B981; }
         button {
@@ -39,31 +38,43 @@
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
+            margin-top: 16px;
         }
-        .logout-btn { background: #EF4444; margin-top: 16px; }
+        .loading { text-align: center; padding: 40px; }
     </style>
 </head>
 <body>
     <div class="glass-card" id="profile">
-        <h1><i class="fa-solid fa-user"></i> Личный кабинет</h1>
-        <div class="info">
-            <p><i class="fa-solid fa-envelope"></i> <strong>Email:</strong> <span id="email">—</span></p>
-            <p><i class="fa-solid fa-calendar"></i> <strong>Дата регистрации:</strong> <span id="created">—</span></p>
+        <div class="loading" id="loading">
+            <i class="fa-solid fa-spinner fa-spin"></i> Загрузка...
         </div>
-        <button onclick="logout()" class="logout-btn"><i class="fa-solid fa-right-from-bracket"></i> Выйти</button>
+        <div id="content" style="display:none;">
+            <h1><i class="fa-solid fa-user"></i> Личный кабинет</h1>
+            <div class="info">
+                <p><i class="fa-solid fa-envelope"></i> <strong>Email:</strong> <span id="email">—</span></p>
+                <p><i class="fa-solid fa-calendar"></i> <strong>Дата регистрации:</strong> <span id="created">—</span></p>
+            </div>
+            <button onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Выйти</button>
+        </div>
     </div>
     <script>
         async function loadProfile() {
-            const res = await fetch('/api/get?action=get-profile');
-            if (res.ok) {
-                const data = await res.json();
-                document.getElementById('email').textContent = data.email;
-                document.getElementById('created').textContent = new Date(data.createdAt).toLocaleDateString('ru-RU');
-            } else {
+            try {
+                const res = await fetch('/api/get-profile');
+                if (res.ok) {
+                    const data = await res.json();
+                    document.getElementById('email').textContent = data.email;
+                    document.getElementById('created').textContent = new Date(data.createdAt).toLocaleDateString('ru-RU');
+                    document.getElementById('loading').style.display = 'none';
+                    document.getElementById('content').style.display = 'block';
+                } else {
+                    window.location.href = '/login.html';
+                }
+            } catch (e) {
                 window.location.href = '/login.html';
             }
         }
-        async function logout() {
+        function logout() {
             document.cookie = 'build_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 UTC;';
             window.location.href = '/index.html';
         }
