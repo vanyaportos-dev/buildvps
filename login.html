@@ -1,69 +1,378 @@
-<!DOCTYPE html>
+            <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Вход — BUILD VPN</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', system-ui, sans-serif;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #A7F3D0 0%, #FED7AA 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .glass-card {
-            background: rgba(255,255,255,0.3);
-            backdrop-filter: blur(15px);
-            border-radius: 24px;
-            padding: 40px;
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-        }
-        h1 { font-size: 28px; margin-bottom: 8px; color: #1F2937; }
-        p { color: #6B7280; margin-bottom: 32px; }
-        .btn-google {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            background: white;
-            color: #1F2937;
-            padding: 14px 20px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 16px;
-            border: 1px solid rgba(0,0,0,0.1);
-            transition: all 0.2s;
-        }
-        .btn-google:hover {
-            background: #f5f5f5;
-            transform: translateY(-2px);
-        }
-        .btn-google i { font-size: 20px; }
-        .error { color: #EF4444; margin-top: 16px; font-size: 14px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вход — BUILD VPN</title>
+  <meta name="description" content="Войдите в личный кабинет BUILD VPN">
+  <meta name="google-signin-client_id" content="430628905826-d49mq8tkg9mbcl8tif1s3ll7qj6pjd50.apps.googleusercontent.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <style>
+    .auth-container {
+      max-width: 420px;
+      margin: 20px auto;
+      padding: 0 16px;
+    }
+    .auth-card {
+      background: var(--card-bg);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
+      border: 1px solid var(--card-border);
+      border-radius: var(--card-radius);
+      padding: 32px 24px;
+      box-shadow: var(--shadow);
+    }
+    .auth-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 6px;
+      letter-spacing: -0.02em;
+    }
+    .auth-title i {
+      color: var(--accent);
+      margin-right: 6px;
+    }
+    .auth-subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-bottom: 28px;
+    }
+    .google-btn-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 8px;
+    }
+    .divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin: 24px 0 20px;
+    }
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .divider span {
+      padding: 0 12px;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+    .form-group input {
+      width: 100%;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.5);
+      border: 1.5px solid var(--card-border);
+      border-radius: 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      transition: var(--transition);
+      outline: none;
+    }
+    .form-group input:focus {
+      border-color: var(--accent);
+      background: rgba(255,255,255,0.7);
+      box-shadow: 0 0 0 3px rgba(16,185,129,0.1);
+    }
+    .btn-full {
+      width: 100%;
+      justify-content: center;
+      padding: 14px;
+      font-size: 0.95rem;
+    }
+    .auth-footer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .auth-footer a {
+      color: var(--accent);
+      font-weight: 600;
+    }
+    .auth-footer a:hover {
+      text-decoration: underline;
+    }
+    .error-message {
+      background: rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.3);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 20px;
+      color: #DC2626;
+      font-size: 0.8rem;
+      display: none;
+    }
+    .success-message {
+      background: rgba(16,185,129,0.1);
+      border: 1px solid rgba(16,185,129,0.3);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 20px;
+      color: var(--accent-dark);
+      font-size: 0.8rem;
+      display: none;
+    }
+    #google-user-info {
+      text-align: center;
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--card-border);
+      display: none;
+    }
+    #google-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      margin-bottom: 8px;
+      border: 2px solid var(--accent);
+    }
+    #google-name {
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    #google-email {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+  </style>
 </head>
 <body>
-    <div class="glass-card">
-        <h1><i class="fa-solid fa-shield-halved"></i> BUILD VPN</h1>
-        <p>Войдите, чтобы продолжить</p>
-        <a href="/api/auth/google" class="btn-google">
-            <i class="fa-brands fa-google"></i> Войти через Google
-        </a>
-        <div id="error" class="error"></div>
+
+<div class="auth-container">
+  <div class="auth-card fade-up">
+    <div class="auth-title">
+      <i class="fa-solid fa-shield-halved"></i> BUILD VPN
     </div>
-    <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('error') === 'no_email') {
-            document.getElementById('error').textContent = 'Не удалось получить email от Google';
+    <div class="auth-subtitle">Войдите в личный кабинет</div>
+
+    <div id="error-message" class="error-message"></div>
+    <div id="success-message" class="success-message"></div>
+
+    <!-- Google Sign-In Button -->
+    <div class="google-btn-wrap">
+      <div class="g-signin2" data-onsuccess="onGoogleSignIn" data-theme="light" data-width="100%"></div>
+    </div>
+
+    <div class="divider">
+      <span>или через почту</span>
+    </div>
+
+    <!-- Email/Password Form -->
+    <form id="login-form" onsubmit="handleEmailLogin(event)">
+      <div class="form-group">
+        <label><i class="fa-regular fa-envelope"></i> Email</label>
+        <input type="email" id="login-email" placeholder="your@email.com" required>
+      </div>
+      <div class="form-group">
+        <label><i class="fa-solid fa-lock"></i> Пароль</label>
+        <input type="password" id="login-password" placeholder="••••••••" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-full">
+        <i class="fa-solid fa-arrow-right-to-bracket"></i> Войти
+      </button>
+    </form>
+
+    <!-- Google User Info (after sign-in) -->
+    <div id="google-user-info">
+      <img id="google-avatar" src="" alt="Avatar">
+      <div id="google-name"></div>
+      <div id="google-email"></div>
+    </div>
+
+    <div class="auth-footer">
+      Нет аккаунта? <a href="register.html">Зарегистрироваться</a><br>
+      <a href="request-status.html" style="font-size:0.75rem;">Проверить статус заявки</a>
+    </div>
+  </div>
+
+  <!-- Back to home -->
+  <div style="text-align:center;margin-top:16px;">
+    <a href="index.html" class="btn btn-ghost">
+      <i class="fa-solid fa-arrow-left"></i> На главную
+    </a>
+  </div>
+</div>
+
+<!-- SPEED TEST MODAL -->
+<div class="modal-overlay" id="speedtest-overlay">
+  <div class="modal" id="speedtest-modal">
+    <button class="modal-close" onclick="closeSpeedTest()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="speedtest-title"><i class="fa-solid fa-gauge-high" style="color:var(--accent)"></i> Тест скорости</div>
+    <div class="speedtest-subtitle">Проверьте скорость вашего соединения</div>
+    <div class="speed-metrics">
+      <div class="speed-metric"><div class="speed-metric-label">Пинг</div><div class="speed-metric-value" id="ping-val">—</div><div class="speed-metric-unit">мс</div></div>
+      <div class="speed-metric"><div class="speed-metric-label">Загрузка</div><div class="speed-metric-value" id="dl-val">—</div><div class="speed-metric-unit">Мбит/с</div></div>
+      <div class="speed-metric"><div class="speed-metric-label">Отдача</div><div class="speed-metric-value" id="ul-val">—</div><div class="speed-metric-unit">Мбит/с</div></div>
+    </div>
+    <div class="speed-progress-wrap">
+      <div class="speed-progress-label"><span id="speed-phase">Ожидание...</span><span id="speed-pct">0%</span></div>
+      <div class="speed-progress-bar"><div class="speed-progress-fill" id="speed-fill"></div></div>
+    </div>
+    <div class="speedtest-btn-wrap"><button class="btn btn-primary" id="speedtest-run-btn"><i class="fa-solid fa-bolt"></i> Запустить</button></div>
+    <div class="speedtest-footer">Технология тестирования предоставлена <strong>BUILD VPN</strong></div>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <a class="nav-item" href="servers.html"><i class="fa-solid fa-server"></i><span>Серверы</span></a>
+  <a class="nav-item" href="news.html"><i class="fa-solid fa-newspaper"></i><span>Новости</span></a>
+  <a class="nav-item" href="index.html#faq"><i class="fa-solid fa-circle-question"></i><span>FAQ</span></a>
+  <a class="nav-item active" href="dashboard.html"><i class="fa-solid fa-user"></i><span>Профиль</span></a>
+  <button class="nav-item" onclick="openSpeedTest()"><i class="fa-solid fa-gauge-high"></i><span>Speedtest</span></button>
+  <a class="nav-item" href="blog/index.html"><i class="fa-solid fa-pen-nib"></i><span>Блог</span></a>
+  <a class="nav-item" href="register.html"><i class="fa-solid fa-user-plus"></i><span>Регистрация</span></a>
+</nav>
+
+<script src="script.js"></script>
+<script>
+  // Google Sign-In callback
+  function onGoogleSignIn(googleUser) {
+    const profile = googleUser.getBasicProfile();
+    const idToken = googleUser.getAuthResponse().id_token;
+    
+    console.log('Google Sign-In successful');
+    console.log('ID Token:', idToken);
+    console.log('Name:', profile.getName());
+    console.log('Email:', profile.getEmail());
+    
+    // Show user info
+    document.getElementById('google-avatar').src = profile.getImageUrl();
+    document.getElementById('google-name').textContent = profile.getName();
+    document.getElementById('google-email').textContent = profile.getEmail();
+    document.getElementById('google-user-info').style.display = 'block';
+    
+    // Show success message
+    const successMsg = document.getElementById('success-message');
+    successMsg.textContent = `Добро пожаловать, ${profile.getName()}!`;
+    successMsg.style.display = 'block';
+    
+    // Hide error if any
+    document.getElementById('error-message').style.display = 'none';
+    
+    // Send ID token to backend for verification and session creation
+    fetch('/api/auth/google', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        idToken: idToken,
+        email: profile.getEmail(),
+        name: profile.getName()
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        // Store token from backend
+        if (data.token) {
+          localStorage.setItem('buildvpn_token', data.token);
         }
-    </script>
+        // Redirect to dashboard after 1.5s
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 1500);
+      } else {
+        showError(data.message || 'Ошибка авторизации через Google');
+      }
+    })
+    .catch(err => {
+      console.error('Google auth error:', err);
+      showError('Ошибка соединения с сервером');
+    });
+  }
+  
+  // Email/Password login
+  async function handleEmailLogin(e) {
+    e.preventDefault();
+    
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+    
+    const errorEl = document.getElementById('error-message');
+    const successEl = document.getElementById('success-message');
+    
+    errorEl.style.display = 'none';
+    successEl.style.display = 'none';
+    
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      
+      const data = await res.json();
+      
+      if (data.success) {
+        localStorage.setItem('buildvpn_token', data.token);
+        successEl.textContent = 'Вход выполнен! Перенаправление...';
+        successEl.style.display = 'block';
+        
+        setTimeout(() => {
+          window.location.href = 'dashboard.html';
+        }, 1000);
+      } else {
+        showError(data.message || 'Неверный email или пароль');
+      }
+    } catch (err) {
+      showError('Ошибка соединения с сервером');
+    }
+  }
+  
+  function showError(msg) {
+    const errorEl = document.getElementById('error-message');
+    errorEl.textContent = msg;
+    errorEl.style.display = 'block';
+  }
+  
+  // Sign out function (call when needed)
+  function signOut() {
+    const auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(() => {
+      console.log('User signed out.');
+      localStorage.removeItem('buildvpn_token');
+      document.getElementById('google-user-info').style.display = 'none';
+      document.getElementById('success-message').style.display = 'none';
+    });
+  }
+  
+  // Check if already logged in
+  document.addEventListener('DOMContentLoaded', () => {
+    const token = localStorage.getItem('buildvpn_token');
+    if (token) {
+      // Verify token with backend
+      fetch('/api/auth/verify', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.valid) {
+          window.location.href = 'dashboard.html';
+        } else {
+          localStorage.removeItem('buildvpn_token');
+        }
+      })
+      .catch(() => {
+        localStorage.removeItem('buildvpn_token');
+      });
+    }
+  });
+</script>
 </body>
 </html>
