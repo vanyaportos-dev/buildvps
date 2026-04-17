@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админка — BUILD VPN</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #A7F3D0 0%, #FED7AA 100%);
+            padding: 40px;
+        }
+        .glass-card {
+            background: rgba(255,255,255,0.3);
+            backdrop-filter: blur(15px);
+            border-radius: 24px;
+            padding: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 { margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(0,0,0,0.1); }
+        button { padding: 6px 12px; border: none; border-radius: 20px; cursor: pointer; margin: 4px; }
+        .approve { background: #10B981; color: white; }
+        .reject { background: #EF4444; color: white; }
+        input { padding: 4px 8px; border-radius: 20px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <div class="glass-card" id="admin-panel">
+        <h1><i class="fa-solid fa-shield-halved"></i> Админка — заявки</h1>
+        <div id="auth">
+            <input type="password" id="admin-pwd" placeholder="Пароль администратора">
+            <button onclick="loginAdmin()">Войти</button>
+        </div>
+        <div id="requests" style="display:none;">
+            <table id="requests-table">
+                <thead><tr><th>Email</th><th>Дата</th><th>Статус</th><th>Действия</th></tr></thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        let adminPassword = '';
+        async function loginAdmin() {
+            const pwd = document.getElementById('admin-pwd').value;
+            const res = await fetch('/api/post', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'x-admin-password': pwd },
+                body: JSON.stringify({ action: 'admin-get-requests' })
+            });
+            if (res.ok) {
+                adminPassword = pwd;
+                document.getElementById('auth').style.display = 'none';
+                document.getElementById('requests').style.display = 'block';
+                loadRequests();
+            } else {
+                alert('Неверный пароль');
+            }
+        }
+        async function loadRequests() {
+            const res = await fetch('/api/post', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'x-admin-password': adminPassword },
+                body: JSON.stringify({ action: 'admin-get-requests' })
+            });
+            const data = await res.json();
+            const tbody = document.querySelector('#requests-table tbody');
+            tbody.innerHTML = '';
+            for (const req of data.requests) {
+                const row = tbody.insertRow();
+                row.insertCell(0).textContent = req.email;
+                row.insertCell(1).textContent = new Date(req.createdAt).toLocaleDateString();
+                row.insertCell(2).textContent = req.status;
+                const actions = row.insertCell(3);
+                if (req.status === 'pending') {
+                    const approveBtn = document.createElement('button');
+                    approveBtn.textContent = '✅ Одобрить';
+                    approveBtn.className = 'approve';
+                    approveBtn.onclick = () => approve(req.email);
+                    const rejectBtn = document.createElement('button');
+                    rejectBtn.textContent = '❌ Отклонить';
+                    rejectBtn.className = 'reject';
+                    rejectBtn.onclick = () => reject(req.email);
+                    actions.appendChild(approveBtn);
+                    actions.appendChild(rejectBtn);
+                } else {
+                    actions.textContent = req.reason || '—';
+                }
+            }
+        }
+        async function approve(email) {
+            await fetch('/api/post', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'x-admin-password': adminPassword },
+                body: JSON.stringify({ action: 'admin-approve', email })
+            });
+            loadRequests();
+        }
+        async function reject(email) {
+            const reason = prompt('Причина отклонения:');
+            if (!reason) return;
+            await fetch('/api/post', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'x-admin-password': adminPassword },
+                body: JSON.stringify({ action: 'admin-reject', email, reason })
+            });
+            loadRequests();
+        }
+    </script>
+</body>
+</html>
