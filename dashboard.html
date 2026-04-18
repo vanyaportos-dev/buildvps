@@ -13,14 +13,10 @@
             background: linear-gradient(135deg, #A7F3D0 0%, #FED7AA 100%);
             padding: 20px;
         }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-        }
+        .container { max-width: 1000px; margin: 0 auto; }
         h1 { font-size: 28px; color: #1F2937; margin-bottom: 8px; }
-        .welcome { color: #6B7280; margin-bottom: 32px; font-size: 16px; }
+        .welcome { color: #6B7280; margin-bottom: 32px; }
         
-        /* Статистика */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -34,14 +30,9 @@
             padding: 24px;
             text-align: center;
         }
-        .stat-number {
-            font-size: 32px;
-            font-weight: 800;
-            color: #10B981;
-        }
-        .stat-label { color: #6B7280; margin-top: 8px; font-size: 14px; }
+        .stat-number { font-size: 32px; font-weight: 800; color: #10B981; }
+        .stat-label { color: #6B7280; margin-top: 8px; }
         
-        /* Основная карточка */
         .info-card {
             background: rgba(255,255,255,0.3);
             backdrop-filter: blur(15px);
@@ -57,15 +48,10 @@
             border-bottom: 1px solid rgba(0,0,0,0.05);
         }
         .info-row:last-child { border-bottom: none; }
-        .info-icon {
-            width: 32px;
-            color: #10B981;
-            font-size: 18px;
-        }
-        .info-label { color: #6B7280; font-size: 14px; width: 100px; }
+        .info-icon { width: 32px; color: #10B981; }
+        .info-label { color: #6B7280; width: 100px; }
         .info-value { color: #1F2937; font-weight: 500; }
         
-        /* Ссылки */
         .links-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -83,13 +69,9 @@
             font-weight: 600;
             transition: all 0.2s;
         }
-        .link-btn:hover {
-            background: rgba(255,255,255,0.5);
-            transform: translateY(-2px);
-        }
+        .link-btn:hover { background: rgba(255,255,255,0.5); transform: translateY(-2px); }
         .link-btn i { margin-right: 8px; color: #10B981; }
         
-        /* Кнопка продления */
         .renew-btn {
             display: block;
             background: #10B981;
@@ -100,15 +82,11 @@
             text-decoration: none;
             font-weight: 700;
             margin-top: 16px;
-            transition: all 0.2s;
         }
-        .renew-btn:hover {
-            background: #0EA271;
-            transform: translateY(-2px);
-        }
+        .renew-btn:hover { background: #0EA271; transform: translateY(-2px); }
         
         .logout-btn {
-            background: rgba(239,68,68,0.2);
+            background: rgba(239,68,68,0.15);
             color: #EF4444;
             text-align: center;
             padding: 12px;
@@ -118,57 +96,32 @@
             font-weight: 600;
         }
         .tip {
-            background: rgba(16,185,129,0.15);
+            background: rgba(16,185,129,0.1);
             border-radius: 16px;
             padding: 16px;
             margin-top: 16px;
             font-size: 14px;
-            color: #1F2937;
         }
         .tip i { color: #10B981; margin-right: 8px; }
     </style>
 </head>
 <body>
-    <div class="container" id="dashboard">
+    <div class="container">
         <h1>Личный кабинет</h1>
         <div class="welcome" id="welcome">Загрузка...</div>
         
-        <!-- Статистика -->
         <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number">31</div>
-                <div class="stat-label">Серверов</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">15</div>
-                <div class="stat-label">Стран</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">0</div>
-                <div class="stat-label">Логов</div>
-            </div>
+            <div class="stat-card"><div class="stat-number">31</div><div class="stat-label">Серверов</div></div>
+            <div class="stat-card"><div class="stat-number">15</div><div class="stat-label">Стран</div></div>
+            <div class="stat-card"><div class="stat-number">0</div><div class="stat-label">Логов</div></div>
         </div>
         
-        <!-- Информация о пользователе -->
         <div class="info-card">
-            <div class="info-row">
-                <div class="info-icon"><i class="fa-solid fa-envelope"></i></div>
-                <div class="info-label">Email</div>
-                <div class="info-value" id="email">—</div>
-            </div>
-            <div class="info-row">
-                <div class="info-icon"><i class="fa-solid fa-calendar"></i></div>
-                <div class="info-label">В сервисе</div>
-                <div class="info-value" id="days">—</div>
-            </div>
-            <div class="info-row">
-                <div class="info-icon"><i class="fa-solid fa-calendar-check"></i></div>
-                <div class="info-label">Дата регистрации</div>
-                <div class="info-value" id="regdate">—</div>
-            </div>
+            <div class="info-row"><div class="info-icon"><i class="fa-solid fa-envelope"></i></div><div class="info-label">Email</div><div class="info-value" id="email">—</div></div>
+            <div class="info-row"><div class="info-icon"><i class="fa-solid fa-calendar"></i></div><div class="info-label">В сервисе</div><div class="info-value" id="days">—</div></div>
+            <div class="info-row"><div class="info-icon"><i class="fa-solid fa-calendar-check"></i></div><div class="info-label">Дата регистрации</div><div class="info-value" id="regdate">—</div></div>
         </div>
         
-        <!-- Быстрые ссылки -->
         <div class="links-grid">
             <a href="/#pricing" class="link-btn"><i class="fa-solid fa-tag"></i> Тарифы</a>
             <a href="/blog" class="link-btn"><i class="fa-solid fa-pen-nib"></i> Блог</a>
@@ -176,21 +129,11 @@
             <a href="/servers" class="link-btn"><i class="fa-solid fa-server"></i> Серверы</a>
         </div>
         
-        <!-- Совет дня -->
-        <div class="tip" id="tip">
-            <i class="fa-solid fa-lightbulb"></i> 
-            Загрузка совета...
-        </div>
+        <div class="tip" id="tip"><i class="fa-solid fa-lightbulb"></i> Загрузка...</div>
         
-        <!-- Кнопка продления -->
-        <a href="https://t.me/buildvpn_bot" target="_blank" class="renew-btn">
-            <i class="fa-solid fa-rotate-right"></i> Продлить подписку
-        </a>
+        <a href="https://t.me/buildvpn_bot" target="_blank" class="renew-btn"><i class="fa-solid fa-rotate-right"></i> Продлить подписку</a>
         
-        <!-- Выход -->
-        <div class="logout-btn" onclick="logout()">
-            <i class="fa-solid fa-right-from-bracket"></i> Выйти
-        </div>
+        <div class="logout-btn" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Выйти</div>
     </div>
 
     <script>
@@ -198,11 +141,11 @@
             "Используйте Bridge-серверы для обхода строгих блокировок.",
             "Сервер 'YouTube no ADS' убирает рекламу перед роликами.",
             "WireGuard быстрее OpenVPN на мобильных устройствах.",
-            "MTProto прокси работает только для Telegram, но не для браузера.",
+            "MTProto прокси работает только для Telegram.",
             "Регулярно обновляйте конфиги для лучшей скорости.",
-            "Подписку можно продлить в любой момент в Telegram-боте.",
-            "В публичных Wi-Fi сетях VPN обязателен — защитите данные."
+            "Подписку можно продлить в Telegram-боте."
         ];
+        document.getElementById('tip').innerHTML = `<i class="fa-solid fa-lightbulb"></i> ${tips[Math.floor(Math.random() * tips.length)]}`;
         
         async function loadProfile() {
             try {
@@ -215,10 +158,8 @@
                     const data = await res.json();
                     document.getElementById('email').textContent = data.email;
                     document.getElementById('regdate').textContent = new Date(data.createdAt).toLocaleDateString('ru-RU');
-                    
-                    // Счётчик дней
                     const days = Math.floor((new Date() - new Date(data.createdAt)) / (1000 * 60 * 60 * 24));
-                    document.getElementById('days').textContent = `${days} ${getDaysWord(days)}`;
+                    document.getElementById('days').textContent = `${days} ${days % 10 === 1 && days % 100 !== 11 ? 'день' : days % 10 >= 2 && days % 10 <= 4 && (days % 100 < 10 || days % 100 >= 20) ? 'дня' : 'дней'}`;
                     document.getElementById('welcome').textContent = `С возвращением, ${data.email.split('@')[0]}! 👋`;
                 } else {
                     window.location.href = '/login.html';
@@ -227,16 +168,6 @@
                 window.location.href = '/login.html';
             }
         }
-        
-        function getDaysWord(days) {
-            if (days % 10 === 1 && days % 100 !== 11) return 'день';
-            if (days % 10 >= 2 && days % 10 <= 4 && (days % 100 < 10 || days % 100 >= 20)) return 'дня';
-            return 'дней';
-        }
-        
-        // Случайный совет дня
-        const randomTip = tips[Math.floor(Math.random() * tips.length)];
-        document.getElementById('tip').innerHTML = `<i class="fa-solid fa-lightbulb"></i> ${randomTip}`;
         
         function logout() {
             document.cookie = 'build_token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 UTC;';
